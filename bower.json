@@ -1,0 +1,22 @@
+{
+  "name": "auth_app",
+  "description": "demo authentification app",
+  "main": "app.js",
+  "authors": [
+    "Maksim Murygin <muriginm@gmail.com>"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "jquery": "^2.2.3"
+  }
+}

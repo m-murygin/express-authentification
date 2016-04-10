@@ -8,6 +8,7 @@
   "globalstrict": "true",
   "immed": true,
   "indent": 4,
+  "esversion": 6,
   "latedef": "nofunc",
   "maxlen": 100,
   "newcap": true,
