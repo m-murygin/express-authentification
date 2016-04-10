@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h2 Welcome to the login area
+  form(method='post', action='/users/register',enctype='multipart/form-data')
+    .form-group
+      label Login
+      input.form-control(name='login', type='text', placeholder='Enter Login')
+    .form-group
+      label Password
+      input.form-control(name='password', type='password', placeholder='Password')
+    input.btn.btn-default.pull-right(name='submit', type='submit', value='Submit')
