@@ -14,12 +14,6 @@ router.get('/register', function(req, res) {
   });
 });
 
-router.get('/login', function(req, res) {
-  res.render('login', {
-    title: 'Log In'
-  });
-});
-
 router.post('/register', function (req, res) {
   let name = req.body.name;
   let email = req.body.email;

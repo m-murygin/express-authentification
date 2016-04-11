@@ -8,13 +8,17 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bodyParser = require('body-parser');
-var multer = require('multer');
+const multer = require('multer');
 const flash = require('connect-flash');
 const mongoose = require('mongoose');
 const expressValidator = require('express-validator');
 const expressMessages = require('express-messages');
 
+const User = require('./models/user');
+const bcrypt = require('./modules/bcrypt');
+
 const routes = require('./routes/index');
+const auth = require('./routes/auth');
 const users = require('./routes/users');
 
 var app = express();
@@ -26,7 +30,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // Handle File Uploads
-app.use(multer({ dest: './uploads/'}).any() );
+app.use(multer({ dest: './uploads/'}). any() );
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -42,6 +46,43 @@ app.use(session({
 // Passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    console.log('Start localStrategy');
+    return User
+      .findOne({ username: username }).exec()
+      .then(user => {
+        console.log('Start Checking');
+
+        if (!user) {
+          return done(null, false, { message: 'Incorrect username.' });
+        }
+
+        return bcrypt
+          .compare(password, user.password)
+          .then(res => {
+            console.log('login result', res);
+            if (res) {
+              return done(null, user);
+            } else {
+              return done(null, false, { message: 'Incorrect password.' });
+            }
+          });
+      })
+      .catch(done);
+  }
+));
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
 
 // Validator
 app.use(expressValidator({
@@ -71,6 +112,7 @@ app.use(function (req, res, next) {
 });
 
 app.use('/', routes);
+app.use('/', auth);
 app.use('/users', users);
 
 // catch 404 and forward to error handler

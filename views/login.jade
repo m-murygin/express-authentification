@@ -2,10 +2,10 @@ extends layout
 
 block content
   h2 Welcome to the login area
-  form(method='post', action='/users/register',enctype='multipart/form-data')
+  form(method='post', action='/login')
     .form-group
       label Login
-      input.form-control(name='login', type='text', placeholder='Enter Login')
+      input.form-control(name='username', type='text', placeholder='Enter Login')
     .form-group
       label Password
       input.form-control(name='password', type='password', placeholder='Password')
