@@ -2,7 +2,6 @@
 
 const express = require('express');
 const path = require('path');
-const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
@@ -12,7 +11,6 @@ const bodyParser = require('body-parser');
 var multer = require('multer');
 const flash = require('connect-flash');
 const mongoose = require('mongoose');
-const db = mongoose.connection;
 const expressValidator = require('express-validator');
 const expressMessages = require('express-messages');
 
@@ -21,15 +19,15 @@ const users = require('./routes/users');
 
 var app = express();
 
+mongoose.connect('mongodb://localhost/nodeauth');
+
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'views')); 
 app.set('view engine', 'jade');
 
 // Handle File Uploads
 app.use(multer({ dest: './uploads/'}).any() );
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
