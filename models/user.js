@@ -1,7 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const db = mongoose.connection;
+const bcrypt = require('../modules/bcrypt');
 
 let UserSchema = mongoose.Schema({
   username: {
@@ -9,7 +9,9 @@ let UserSchema = mongoose.Schema({
     index: true
   },
   password: {
-    type: String
+    type: String, 
+    bcrypt: true,
+    required: true
   },
   email: {
     type: String,
@@ -23,7 +25,14 @@ let UserSchema = mongoose.Schema({
 });
 
 UserSchema.statics.createUser = function (newUser) {
-  return newUser.save();
+
+  return bcrypt
+    .hash(newUser.password)
+    .then(hash => {
+      newUser.password = hash;
+
+      return newUser.save();
+    });
 };
 
 let User = mongoose.model('User', UserSchema);
