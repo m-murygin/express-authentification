@@ -25,6 +25,7 @@ html
             li(class=(title === 'Log Out' ? 'active' : ''))
               a(href='/logout') Log Out
     .container
+      !=messages()
       block content
     
     br

@@ -12,16 +12,23 @@ router.get('/login', function(req, res) {
 
 router.post('/login',
   passport.authenticate('local', {
-    successRedirect: '/',
     failureRedirect: '/login',
     failureFlash: 'Invalid username or password'
   }),
   function(req, res) {
-    console.log('------Success login');
-
     req.flash('success', 'You are logged in');
     res.redirect('/');
   }
 );
+
+router.get('/logout', function (req, res) {
+  console.log(req.user);
+  req.logout();
+  req.flash('success', 'You have logged out');
+
+  console.log('log out success');
+
+  res.redirect('/login');
+});
 
 module.exports = router;
